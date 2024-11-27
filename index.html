@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page d'Accueil des Projets - WebX</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .projects {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .project-card {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            width: 45%;
+            margin: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .project-card:hover {
+            transform: scale(1.05);
+        }
+
+        .project-card h2 {
+            color: #4CAF50;
+            margin-bottom: 15px;
+        }
+
+        .project-card a {
+            text-decoration: none;
+            font-size: 18px;
+            color: white;
+            background-color: #4CAF50;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .project-card a:hover {
+            background-color: #45a049;
+        }
+
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 14px;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Page d'Accueil des Projets - WebX</h1>
+        <div class="projects">
+            <!-- Projet 1 -->
+            <div class="project-card">
+                <h2>Bloc Notes</h2>
+                <p>Un bloc-notes simple pour gérer vos idées et vos textes.</p>
+                <a href="blocnotes.html">Voir le projet</a>
+            </div>
+
+            <!-- Projet 2 -->
+            <div class="project-card">
+                <h2>Calculatrice</h2>
+                <p>Une calculatrice simple et pratique pour vos calculs quotidiens.</p>
+                <a href="calculatrice.html">Voir le projet</a>
+            </div>
+
+            <!-- Projet 3 - Gestionnaire de Tâches -->
+            <div class="project-card">
+                <h2>Gestionnaire de Tâches</h2>
+                <p>Gérez vos tâches quotidiennes et organisez votre emploi du temps.</p>
+                <a href="taches.html">Voir le projet</a>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 WebX - Contactez-nous à <a href="mailto:webxcorp.net@gmail.com">webxcorp.net@gmail.com</a></p>
+    </footer>
+</body>
+</html>

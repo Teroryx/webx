@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculatrice Chill</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(45deg, #ff6a00, #ee0979);
+            color: white;
+            transition: background 0.5s ease;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .calculator, .history, .converter {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            width: 400px;
+            position: relative;
+            color: white;
+        }
+
+        .calculator .display {
+            width: calc(100% - 20px);
+            height: 60px;
+            margin-bottom: 20px;
+            font-size: 28px;
+            text-align: right;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            overflow-x: hidden;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .buttons button, .theme-selector button {
+            height: 60px;
+            font-size: 20px;
+            border: none;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .buttons button:hover, .theme-selector button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        .history, .converter {
+            height: 300px;
+            overflow-y: auto;
+        }
+
+        .history h2, .converter h2 {
+            font-size: 24px;
+            color: #ff9800;
+            margin-bottom: 10px;
+        }
+
+        .history p, .converter p {
+            font-size: 16px;
+            color: white;
+            margin: 5px 0;
+        }
+
+        .theme-selector {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="theme-selector">
+            <button onclick="setTheme('clair')">Thème Clair</button>
+            <button onclick="setTheme('sombre')">Thème Sombre</button>
+            <button onclick="setTheme('degrade')">Thème Dégradé</button>
+        </div>
+        <div class="calculator">
+            <input type="text" id="display" class="display" disabled placeholder="0">
+            <div class="buttons">
+                <button class="clear" onclick="clearDisplay()">C</button>
+                <button class="delete" onclick="deleteLastCharacter()">←</button>
+                <button onclick="calculateSquareRoot()">√</button>
+                <button onclick="chooseOperation('/')">÷</button>
+
+                <button onclick="appendNumber('7')">7</button>
+                <button onclick="appendNumber('8')">8</button>
+                <button onclick="appendNumber('9')">9</button>
+                <button onclick="chooseOperation('*')">×</button>
+
+                <button onclick="appendNumber('4')">4</button>
+                <button onclick="appendNumber('5')">5</button>
+                <button onclick="appendNumber('6')">6</button>
+                <button onclick="chooseOperation('-')">−</button>
+
+                <button onclick="appendNumber('1')">1</button>
+                <button onclick="appendNumber('2')">2</button>
+                <button onclick="appendNumber('3')">3</button>
+                <button onclick="chooseOperation('+')">+</button>
+
+                <button onclick="appendNumber('0')">0</button>
+                <button onclick="calculatePercentage()">%</button>
+                <button onclick="toggleSign()">±</button>
+                <button onclick="calculate()">=</button>
+            </div>
+        </div>
+        <div class="history">
+            <h2>Historique</h2>
+            <div id="history-list"></div>
+        </div>
+        <div class="converter">
+            <h2>Convertisseur</h2>
+            <p>À venir...</p>
+        </div>
+    </div>
+    <script>
+        let currentOperand = '';
+        let previousOperand = '';
+        let operation = null;
+        const display = document.getElementById('display');
+        const historyList = document.getElementById('history-list');
+
+        function appendNumber(number) {
+            currentOperand += number;
+            updateDisplay();
+        }
+
+        function chooseOperation(op) {
+            if (currentOperand === '') return;
+            if (previousOperand !== '') calculate();
+            operation = op;
+            previousOperand = currentOperand;
+            currentOperand = '';
+        }
+
+        function calculate() {
+            let computation;
+            const prev = parseFloat(previousOperand);
+            const current = parseFloat(currentOperand);
+            if (isNaN(prev) || isNaN(current)) return;
+            switch (operation) {
+                case '+':
+                    computation = prev + current;
+                    break;
+                case '-':
+                    computation = prev - current;
+                    break;
+                case '*':
+                    computation = prev * current;
+                    break;
+                case '/':
+                    computation = prev / current;
+                    break;
+                default:
+                    return;
+            }
+            addToHistory(`${previousOperand} ${operation} ${current} = ${computation}`);
+            currentOperand = computation.toString();
+            operation = null;
+            previousOperand = '';
+            updateDisplay();
+        }
+
+        function clearDisplay() {
+            currentOperand = '';
+            previousOperand = '';
+            operation = null;
+            updateDisplay();
+        }
+
+        function deleteLastCharacter() {
+            currentOperand = currentOperand.slice(0, -1);
+            updateDisplay();
+        }
+
+        function updateDisplay() {
+            display.value = currentOperand || '0';
+        }
+
+        function addToHistory(calculation) {
+            const historyItem = document.createElement('p');
+            historyItem.textContent = calculation;
+            historyList.insertBefore(historyItem, historyList.firstChild);
+        }
+
+        function setTheme(theme) {
+            if (theme === 'clair') {
+                document.body.style.background = '#ffffff';
+                document.body.style.color = '#000000';
+            } else if (theme === 'sombre') {
+                document.body.style.background = '#000000';
+                document.body.style.color = '#ffffff';
+            } else if (theme === 'degrade') {
+                document.body.style.background = 'linear-gradient(45deg, #ff6a00, #ee0979)';
+                document.body.style.color = '#ffffff';
+            }
+        }
+    </script>
+</body>
+</html>
